@@ -18,6 +18,31 @@ const UserController = {
             status: true,
             list: result,
         })
+    },
+    saveUserData : async (request,response) => {
+        let user = request.body;
+        let saveData = {...user};
+        let newUser = new UserModel(saveData);
+        let result = await newUser.save();
+        //let result = await UserModel.create(saveData);
+        response.send({
+            call: true,
+            result
+        })
+    },
+    userLogin: async (request,response) => {
+        let { username , password } = request.body;
+        let isUserValid = await UserModel.findOne({email: username, password:password},{password:0});
+        if(isUserValid) {
+            response.send({
+                call: true,
+                user: isUserValid
+            })
+        }else{
+            response.send({
+                call: false
+            })
+        }
     }
 }
 

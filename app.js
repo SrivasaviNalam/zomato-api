@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const PORT = 3040;
 const AppRouter = require('./routes/AppRoutes');
 
+app.use(express.json()) ;// allows raw data to post
+app.use(express.urlencoded({ extended: false })); //enable the form data
 //add routes
 app.use("/api",AppRouter);
 
