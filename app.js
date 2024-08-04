@@ -3,6 +3,10 @@ const app = express();
 const mongoose = require('mongoose');
 const PORT = 3040;
 const AppRouter = require('./routes/AppRoutes');
+const cors = require('cors');
+
+//enable cors
+app.use(cors());
 
 app.use(express.json()) ;// allows raw data to post
 app.use(express.urlencoded({ extended: false })); //enable the form data

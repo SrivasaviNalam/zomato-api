@@ -22,17 +22,24 @@ const UserController = {
     saveUserData : async (request,response) => {
         let user = request.body;
         let saveData = {...user};
-        let newUser = new UserModel(saveData);
-        let result = await newUser.save();
-        //let result = await UserModel.create(saveData);
-        response.send({
-            call: true,
-            result
-        })
+        let existingUser = await UserModel.findOne({mobile: saveData.mobile});
+        if (existingUser) {
+            response.send({
+                call: false,
+                message: "Given user has already an account with the given mobile number"
+            })
+        } else {
+            let newUser = new UserModel(saveData);
+            await newUser.save();
+            response.send({
+                call: true,
+                message: "You registered successfully!!"
+            })
+        }
     },
     userLogin: async (request,response) => {
         let { username , password } = request.body;
-        let isUserValid = await UserModel.findOne({email: username, password:password},{password:0});
+        let isUserValid = await UserModel.findOne({mobile: username, password:password},{password:0});
         if(isUserValid) {
             response.send({
                 call: true,
